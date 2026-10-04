@@ -1,0 +1,53 @@
+KNN predictions of confusion metrix, accuracy score and classiffication report.
+=======================================================================================================================================================================================================================================
+
+
+[[65  9]
+ [18  4]]
+0.71875
+              precision    recall  f1-score   support
+
+           0       0.78      0.88      0.83        74
+           1       0.31      0.18      0.23        22
+
+    accuracy                           0.72        96
+   macro avg       0.55      0.53      0.53        96
+weighted avg       0.67      0.72      0.69        96
+===================================================================
+The KNN model reached 71.9% accuracy, but this number is misleading.
+The test set has 96 rows (74 dry, 22 rainy), so a model that always predicts "no rain" would score about 77%, meaning KNN did slightly worse than guessing. 
+The confusion matrix shows why: it caught only 4 of the 22 rainy hours (rain recall 0.18, precision 0.31, F1 0.23) and missed 18. 
+It looks good on dry hours (recall 0.88) because it mostly predicts the majority class. The macro F1 of 0.53 is close to random for a two-class problem. In short, KNN with these settings has learned very little about rain,
+and an person should read its accuracy as a result of class imbalance, not skill.
+=====================================================================================================================================================================================================================================
+
+
+LogisticRegression predictions of confusion metrix, accuracy score and classiffication report.
+
+==============================================================================================================================================================
+
+[[39 35]
+ [ 2 20]]
+0.6145833333333334
+              precision    recall  f1-score   support
+
+           0       0.95      0.53      0.68        74
+           1       0.36      0.91      0.52        22
+
+    accuracy                           0.61        96
+   macro avg       0.66      0.72      0.60        96
+weighted avg       0.82      0.61      0.64        96
+============================================================================================================================================================================================================================================
+This model has lower accuracy (61.5%) but is more useful for the stated goal. 
+It caught 20 of the 22 rainy hours (rain recall 0.91) and missed only 2, which is a large improvement over KNN.
+The cost is 35 false alarms (dry hours predicted as rain), so rain precision is only 0.36 and dry-hour recall falls to 0.53. 
+The rain F1 of 0.52 and macro F1 of 0.60 are both clearly better than KNN's. 
+The pattern, high recall with low precision, is what you get when the model is pushed to favor the rare class.
+An person should understand that accuracy dropped on purpose: the model trades false alarms for catching rain, which is the right trade if missing rain is the costly mistake.
+
+==============================================================================================================================================================================================================================
+
+
+=========================================================================================================================
+
+===================================================================================================================================
